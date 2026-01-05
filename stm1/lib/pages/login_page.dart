@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
+import '../services/auth_api_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -41,18 +41,15 @@ class _LoginPageState extends State<LoginPage> {
 
                   TextField(
                     controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                    ),
+                    decoration: const InputDecoration(labelText: 'Email'),
                   ),
                   const SizedBox(height: 12),
 
                   TextField(
                     controller: passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                    ),
+                    decoration:
+                        const InputDecoration(labelText: 'Password'),
                   ),
 
                   if (error.isNotEmpty)
@@ -68,14 +65,15 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        final success = AuthService.login(
+                      onPressed: () async {
+                        final success = await AuthApiService.login(
                           email: emailController.text,
                           password: passwordController.text,
                         );
 
                         if (success) {
-                          Navigator.pushReplacementNamed(context, '/home');
+                          Navigator.pushReplacementNamed(
+                              context, '/home');
                         } else {
                           setState(() {
                             error = 'Email atau password salah';
@@ -91,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/register');
                     },
-                    child: const Text('Belum punya akun? Register'),
+                    child:
+                        const Text('Belum punya akun? Register'),
                   ),
                 ],
               ),
