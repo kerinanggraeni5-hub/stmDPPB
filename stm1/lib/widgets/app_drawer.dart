@@ -16,11 +16,20 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 28,
-                  backgroundImage:
-                      AssetImage('assets/images/logo1.jpg'),
+                // FOTO BISA DIKLIK → PROFIL
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    Navigator.pop(context); // tutup drawer
+                    Navigator.pushNamed(context, '/profil');
+                  },
+                  child: const CircleAvatar(
+                    radius: 28,
+                    backgroundImage:
+                        AssetImage('assets/images/logo1.jpg'),
+                  ),
                 ),
+
                 const SizedBox(height: 12),
                 const Text(
                   'Nauval Rafi',
@@ -52,7 +61,7 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.videocam),
             title: const Text('CCTV'),
             onTap: () {
-             Navigator.pushNamed(context, '/cctv');
+              Navigator.pushNamed(context, '/cctv');
             },
           ),
           ListTile(
@@ -63,28 +72,26 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-          leading: const Icon(Icons.rate_review),
-          title: const Text('Ulasan'),
-          onTap: () {
-          Navigator.pop(context); // nutup drawer
-          Navigator.pushNamed(context, '/ulasan');
-  },
-),
-
+            leading: const Icon(Icons.rate_review),
+            title: const Text('Ulasan'),
+            onTap: () {
+              Navigator.pushNamed(context, '/ulasan');
+            },
+          ),
 
           const Spacer(),
 
-          // ================= LOGOUT =================
+          // ================= LOGIN =================
           Padding(
             padding: const EdgeInsets.all(16),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                ),
-                onPressed: () {},
-                child: const Text('Logout'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text('Login'),
               ),
             ),
           ),

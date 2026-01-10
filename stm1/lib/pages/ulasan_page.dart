@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/ulasan_model.dart';
 import '../services/ulasan_api_service.dart';
+import '../widgets/app_navbar.dart';
+import '../widgets/app_drawer.dart';
 
 class UlasanPage extends StatefulWidget {
   const UlasanPage({super.key});
@@ -41,103 +43,122 @@ class _UlasanPageState extends State<UlasanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ulasan Pengguna')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
+      appBar: const AppNavbar(),
+      drawer: const AppDrawer(),
+      backgroundColor: const Color(0xFFF5F7FB),
 
-            // ===== FORM ULASAN =====
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: deskripsiCtrl,
-                      decoration: const InputDecoration(
-                        labelText: 'Tulis ulasan',
-                        border: OutlineInputBorder(),
-                      ),
-                      maxLines: 3,
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    Row(
-                      children: [
-                        const Text('Rating:'),
-                        const SizedBox(width: 12),
-                        DropdownButton<int>(
-                          value: rating,
-                          items: List.generate(5, (i) {
-                            return DropdownMenuItem(
-                              value: i + 1,
-                              child: Text('${i + 1} ⭐'),
-                            );
-                          }),
-                          onChanged: (val) {
-                            setState(() {
-                              rating = val!;
-                            });
-                          },
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // ================= FORM =================
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.15),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          'Tulis Ulasan',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0D47A1),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
 
-                    const SizedBox(height: 12),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _kirimUlasan,
-                        child: const Text('Kirim Ulasan'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // ===== LIST ULASAN =====
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Ulasan Terbaru',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            Expanded(
-              child: daftarUlasan.isEmpty
-                  ? const Center(child: Text('Belum ada ulasan'))
-                  : ListView.builder(
-                      itemCount: daftarUlasan.length,
-                      itemBuilder: (context, index) {
-                        final u = daftarUlasan[index];
-                        return Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.star, color: Colors.amber),
-                            title: Text(u.deskripsi),
-                            subtitle: Text(
-                              'Rating: ${u.rating} ⭐',
+                        TextField(
+                          controller: deskripsiCtrl,
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                            labelText: 'Ulasan Anda',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
                             ),
                           ),
-                        );
-                      },
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        DropdownButton<int>(
+                          value: rating,
+                          items: List.generate(
+                            5,
+                            (i) => DropdownMenuItem(
+                              value: i + 1,
+                              child: Text('${i + 1} ⭐'),
+                            ),
+                          ),
+                          onChanged: (val) =>
+                              setState(() => rating = val!),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        ElevatedButton(
+                          onPressed: _kirimUlasan,
+                          child: const Text('Kirim Ulasan'),
+                        ),
+                      ],
                     ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ================= LIST =================
+                  Expanded(
+                    child: daftarUlasan.isEmpty
+                        ? const Center(
+                            child: Text('Belum ada ulasan'),
+                          )
+                        : ListView.builder(
+                            itemCount: daftarUlasan.length,
+                            itemBuilder: (context, index) {
+                              final u = daftarUlasan[index];
+                              return ListTile(
+                                leading: const Icon(Icons.star,
+                                    color: Colors.amber),
+                                title: Text(u.deskripsi),
+                                subtitle:
+                                    Text('Rating: ${u.rating} ⭐'),
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+
+          // ================= FOOTER =================
+          _footer(),
+        ],
       ),
     );
   }
+
+  Widget _footer() => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        color: Colors.blue.shade800,
+        child: const Text(
+          '© 2025 Smart Traffic Management Kabupaten Bandung',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
+      );
 }

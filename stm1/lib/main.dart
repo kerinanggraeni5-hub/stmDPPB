@@ -5,6 +5,7 @@ import 'pages/home_page.dart';
 import 'pages/cctv_page.dart';
 import 'pages/pengaduan_page.dart';
 import 'pages/ulasan_page.dart';
+import 'pages/profile_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      initialRoute: '/ulasan',
+      initialRoute: '/home',
 
       routes: {
         '/register': (context) => const RegisterPage(),
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/cctv': (context) => const CCTVPage(),
         '/pengaduan': (context) => const PengaduanPage(),
         '/ulasan': (context) => const UlasanPage(),
+        '/profil': (context) => const ProfilPage(),
       },
     );
   }
